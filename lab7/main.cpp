@@ -27,7 +27,7 @@ HICON hIcon;
 
 // Опережающие объявления функций
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM); // Оконная процедура основного окна
-LRESULT CALLBACK WndProc1(HWND, UINT, WPARAM, LPARAM); // Оконная процедура окна "О программе"
+INT_PTR CALLBACK WndProc1(HWND, UINT, WPARAM, LPARAM); // Оконная процедура окна "О программе"
 INT_PTR CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM); // Диалоговая процедура калькулятора
 
 // Основная функция программы
@@ -135,18 +135,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             DialogBox(hInst, MAKEINTRESOURCE(IDD_CALCULATOR), hwnd, DlgProc);
             break;
         case ID_SCREENSAVER:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCREENSAVER), hwnd, DlgProc);
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCREENSAVER), hwnd, WndProc1);
             break;
         case ID_DLL: {
             const char* str = "Hella";
             bool result = procd3(str, 'a');
-            if (result) {
+            /*if (result) {
                 MessageBox(hwnd, L"Function call succeeded!", L"Success", MB_OK | MB_ICONINFORMATION);
             }
             else {
                 MessageBox(hwnd, L"Function call failed!", L"Error", MB_OK | MB_ICONERROR);
             }
-            break;
+            break;*/
         }
         }
 
@@ -191,19 +191,11 @@ INT_PTR CALLBACK WndProc1(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
         // Рисование текста поверх битмапа
         SetBkMode(hdc, TRANSPARENT);
-        TextOut(hdc, 4, 4, L"Team Name", 9);
+        TextOut(hdc, 4, 4, L"Вариант 3", 9);
 
         EndPaint(hwnd, &ps);
         break;
     }
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case ID_SCREENSAVER:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCREENSAVER), hwnd, DlgProc);
-            break;
-        }
-        return 0;
     case WM_CLOSE: // Сообщение о закрытии окна
         EndDialog(hwnd, 0); // Завершение диалога
         break;
@@ -217,22 +209,22 @@ INT_PTR CALLBACK WndProc1(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 // Диалоговая процедура диалога-калькулятора
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) { // Обработка сообщений
-    case WM_PAINT: {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hDlg, &ps);
-        RECT rect;
-        GetClientRect(hDlg, &rect);
+    //case WM_PAINT: {
+    //    PAINTSTRUCT ps;
+    //    HDC hdc = BeginPaint(hDlg, &ps);
+    //    RECT rect;
+    //    GetClientRect(hDlg, &rect);
 
-        // Рисование битмапа
-        DrawBitmap(hdc, Bkgnd, 0, 0, rect);
+    //    // Рисование битмапа
+    //    DrawBitmap(hdc, Bkgnd, 0, 0, rect);
 
-        // Рисование текста поверх битмапа
-        SetBkMode(hdc, TRANSPARENT);
-        TextOut(hdc, 4, 4, L"Вариант 3", 9);
+    //    // Рисование текста поверх битмапа
+    //    SetBkMode(hdc, TRANSPARENT);
+    //    TextOut(hdc, 4, 4, L"Вариант 3", 9);
 
-        EndPaint(hDlg, &ps);
-        break;
-    }
+    //    EndPaint(hDlg, &ps);
+    //    break;
+    //}
     case WM_COMMAND: {
         if (HIWORD(wParam) == BN_CLICKED) {
             switch (LOWORD(wParam)) {
