@@ -36,6 +36,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     HWND hwnd; // Дескриптор основного окна
     MSG Msg; // Структура для хранения сообщений
 
+    HACCEL hAccelTable; // Добавлено
+
     hInst = hInstance; // Сохранение дескриптора экземпляра приложения
 
     hCursor = LoadCursor(hInstance, MAKEINTRESOURCE(IDI_MYCURSOR));
@@ -99,10 +101,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return 1;
     }
 
-    // Основной цикл обработки сообщений
-    while (GetMessage(&Msg, NULL, 0, 0) > 0) { // Получение сообщений
-        TranslateMessage(&Msg); // Перевод сообщений
-        DispatchMessage(&Msg); // Отправка сообщений
+    hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDR_ACCELERATOR)); // Добавлено
+    if (hAccelTable == NULL) {
+        MessageBox(NULL, L"Не удалось загрузить акселератор", L"Ошибка", MB_OK | MB_ICONERROR);
+        return 1;
+    }
+
+    while (GetMessage(&Msg, NULL, 0, 0) > 0) {
+        if (!TranslateAccelerator(hwnd, hAccelTable, &Msg)) { // Добавлено
+            TranslateMessage(&Msg);
+            DispatchMessage(&Msg);
+        }
     }
     return Msg.wParam; // Возврат кода выхода
 }
@@ -118,8 +127,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         HDC hdc = BeginPaint(hwnd, &ps);
         bool iTextLen;
         TCHAR szText[1024];
-       // iTextLen = _stprintf_s(szText, TEXT("lll"), procd3("aert", brd));
-         //   TextOut(hdc, 16, 16, szText, iTextLen);
+        /*iTextLen = _stprintf_s(szText, TEXT("lll"), procd3("aert", brd));
+            TextOut(hdc, 16, 16, szText, iTextLen);*/
     }
     case WM_CREATE:
         // Установка меню для основного окна

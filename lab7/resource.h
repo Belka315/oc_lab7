@@ -34,6 +34,8 @@
 #define IDI_MYICON 251
 #define IDC_STATIC 300
 
+#define IDR_ACCELERATOR 400
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
